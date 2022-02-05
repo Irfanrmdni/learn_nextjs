@@ -1,16 +1,238 @@
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+input {
+    width: 100%;
+    display: inline-block;
+    font-family: inherit;
+    padding: .5rem 1rem;
+    border-radius: 4px;
+    outline: none;
+    font-size: 1rem;
+    border: none;
+    box-shadow: 1px 4px 16px rgba(0, 0, 0, .1);
+}
+
+form {
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 1.8rem;
+}
+
+form input:nth-child(2) {
+    margin: 1.2rem 0;
+}
+
+form p {
+    margin-top: 1.2rem;
+    font-size: 1.1rem;
+}
+
+form .btn_register {
+    font-size: 1.1rem;
+    text-decoration: underline;
+    color: #005daf;
+    font-weight: 400;
+    transition: all .2s ease-in-out;
+}
+
+form .btn_register:hover {
+    color: white;
+}
+
+button,
+.btn_createPost,
+.btn_logout,
+.btn_post {
+    display: inline-block;
+    font-size: 1rem;
+    font-family: inherit;
+    padding: .5rem 2rem;
+    line-height: 1.5;
+    border: none;
+    background-color: #5cb85c;
+    cursor: pointer;
+    color: white;
+    border-radius: 6px;
+    margin-top: 1rem;
+    transition: all .3s ease-in-out;
+    box-shadow: 1px 5px 10px rgba(0, 0, 0, .1);
+}
+
+button:hover,
+.btn_createPost:hover {
+    background-color: rgb(2, 207, 26);
+}
+
+.btn_edit {
+    background-color: #1883e0;
+    margin-right: 1rem;
+}
+
+.btn_edit:hover {
+    background-color: #005daf;
+}
+
+.btn_delete {
+    background-color: #d9534f;
+}
+
+.btn_delete:hover {
+    background-color: #e6211a;
+}
+
+.btn_post {
+    background-color: #505253;
+    margin-right: 1rem;
+}
+
+.btn_post:hover {
+    background-color: #292b2c;
+}
+
+
+
+.register,
+.login {
+    width: 100%;
+    margin: auto;
+    min-height: 100vh;
+    background-color: #3EECAC;
+    background-image: linear-gradient(19deg, #3EECAC 0%, #EE74E1 100%);
+    color: rgb(233, 233, 233);
+    padding: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.register h1,
+.login h1 {
+    text-transform: capitalize;
+}
+
+.post,
+.create_post,
+.update_post {
+    width: 720px;
+    min-height: 100vh;
+    margin: auto;
+    padding: 1rem 2rem;
+    background-color: rgb(235, 235, 235);
+    color: rgb(41, 40, 40);
+    position: relative;
+}
+
+.post ul {
+    list-style-type: decimal;
+}
+
+.post ul li {
+    margin: 1rem 0;
+}
+
+.post h1,
+.create_post h1,
+.update_post h1 {
+    font-size: 2rem;
+    text-transform: uppercase;
+    color: cornflowerblue;
+}
+
+.post hr,
+.create_post hr,
+.update_post hr {
+    margin: 12px 0;
+    border: solid 1px cornflowerblue;
+}
+
+.post h5 {
+    font-size: 1rem;
+    text-transform: capitalize;
+    margin-bottom: 6px;
+}
+
+.post p {
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.post_id {
+    display: block;
+    font-weight: 600;
+    margin-top: 1.5rem;
+}
+
+.btn_createPost {
+    margin-right: 1rem;
+}
+
+.btn_logout {
+    position: absolute;
+    top: 0;
+    right: 2rem;
+    background-color: #f0ad4e;
+}
+
+.btn_logout:hover {
+    background-color: #f19410;
+}
+
+.create_post form,
+.update_post form {
+    width: 80%;
+    margin: 1.2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.create_post textarea,
+.update_post textarea {
+    width: 100%;
+    margin: 1.2rem 0;
+    min-height: 300px;
+    display: inline-block;
+    font-family: inherit;
+    padding: .5rem 1rem;
+    border-radius: 4px;
+    outline: none;
+    font-size: 1rem;
+    border: none;
+    box-shadow: 1px 4px 16px rgba(0, 0, 0, .1);
+}
+
+.normal {
+    color: rgb(20, 111, 231);
+}
+
+.error {
+    color: rgb(231, 20, 20);
+}
+
+.success {
+    color: rgb(20, 231, 31);
+}
+
+.line {
+    border: solid 1px rgb(172, 171, 171) !important;
 }
