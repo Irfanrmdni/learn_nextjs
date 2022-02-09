@@ -1,0 +1,1588 @@
+REACTJS adalah library Javascript untuk pengembang front-end. dengan menggunakan teknik client-side rendering.
+dimana ketika browser merequest halaman react tersebut maka browser akan mendownload dulu bundle Javascript nya, markupnya
+style nya dan lain-lain kemudian browser akan memparsing Javascript tersebut. ketika sudah diparsing maka ui tampilan nya akan ditampilkan.
+
+=============================================================================================================================================
+
+NEXT JS adalah Framework ReactJs yang menggunakan teknik server-side rendering. jadi ketika browser merequest maka server akan merender react
+component tadi yang terkait atau yang relevan dengan halaman yang direquest oleh browser. ketika server selesai rendering maka hasilnya
+dijadikan respon body ke client atau browser. maka dari itu ketika browser menerima respon dari server itu maka markupnya udah sangat complete.
+jadi itu ui tampilan nya udah bakal langsung muncul
+
+di NEXT JS kita bisa melakukan full-stack karena server-side rendering itu berjalan nya di server. otomatis kita bisa menjalankan
+code-code Javascript server kita. dan ini berjalan diatas enviroment node.
+
+https://devhints.io/knex
+https://knexjs.org
+https://nextjs.org
+https://www.npmjs.com/package/js-cookie
+
+TRUNCATE TABLE adalah salah satu perintah atau statement di database MySQL untuk mengosongkan atau menghapus semuda data yang ada di table.
+Perintah Truncate Table mirip dengan perintah DELETE table, hanya lebih singkat dan sederhana tanpa menggunakan WHERE clause.
+=============================================================================================================================================
+
+1. membuat / menginstall NEXT JS
+$npx create-next-app (nama project)
+
+2. menjalankan NEXT JS
+$npm run dev    : untuk memulai sebagai pengembang server
+$npm run build  : memulai dengan membangun aplikasi untuk produksi
+$npm run start  : untuk menjalankan aplikasi bawaan dalam mode produksi
+
+3. struktur directori NEXT JS
+@.next              : berupa file static fungsinya untuk deploy hasil project NEXT JS 
+@node_modules       : berisi package-package. jadi modules / dependencies yang kita bangun itu ada di node_modules
+@pages              : special folder (file system routing) untuk membuat halaman routing atau halaman - halaman di NEXT JS
+    @api            : digunakan untuk REST API / GraphQL server
+        hello.js    : ini adalah contoh penggunaan API nya 
+    _app.JS         : high order component. ini tidak akan diakses oleh browser karena cuma sebagai pembungkus saja
+    index.js        : berisi tampilan halaman pada saat pertama kali NEXT JS di jalankan (satu halaman / halaman default)
+@public             : untuk menyimpan file static assets (image,font,video,css) yang tidak perlu di proses lagi
+@styles             : bukan file special folder. jadi ini hanya dibuat secara sengaja oleh developer untuk memberikan style pada project NEXT JS
+    globals.css     : berisi style global css
+    home.module.css : berisi style untuk pages atau halaman di index.js
+
+4. membuat pages atau halaman pada NEXT JS
+jadi untuk membuat halaman kita harus mengeksport satu component react di dalam file Javascript dan file Javascript itu
+harus ada di dalam folder pages. dimana nama file nya itu akan menjadi route di browser. ketika users mengakses 
+
+5. API di Next JS
+berisi file yang berhubungan dengan data dan return nya juga data function yang di eksport di API menerima 2 parameter (request, response).
+
+request : ini object yang berisi incoming http request atau http request yang masuk dari client. contohnya jadi ketika melakukan pemanggilan API
+ke API hello.js ini maka kita bisa mendapatkan informasi request tadi. informasi request nya bisa berupa :
+- headers. origin nya kita bisa ambil
+- cek method (POST, PUT, DELETE, GET)
+- membaca cookies nya
+- mengambil request body 
+
+response : untuk memberikan respon ke client dimana ketika client itu merequest. dimana respon nya itu sesuai.
+- entah itu kita mau memberikan response http status nya 200, 404, 500 dan sebagainya
+- memberikan response body
+
+jadi request itu mengambil informasi kepada client dan response untuk memberikan respon data ke client yang merequest tadi.
+
+6. membuat API baru NEXT JS
+export default function handler(req, res) {
+
+    1 - membuat API JSON (cara ke 1)
+    res.status(200).json({ name: 'John Doe' })
+
+    2 - membuat API JSON (cara ke 2)
+    res.status(200);
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ name: 'irfan ramdani' }));
+
+    3 - membuat API STRING
+    res.status(200)
+    res.end('irfan ramdani')
+
+}
+
+=============================================================================================================================================
+
+7. konfigurasi database
+- membuat database $create database (nama database)
+- membuat user database $create user '(nama user)'@'localhost' identified with mysql_native_password by '(nama password)'
+- setelah itu memberikan akses penuh dengan cara $grant all privileges on (nama database).* to '(nama user)'@'localhost' -> * artinya semua tabel
+- login ke user yang baru dengan cara $mysql -u (nama database) -p
+
+8. library knex orm.
+- untuk berinteraksi dengan database menggunakan object
+- untuk melakukan migration (membuat schema database menggunakan code Javascript)
+- untuk melakukan seeder (menambahkan atau insert default data ke dalam database)
+- knex ini menggunakan promise. ini akan jadi asyncrhonous dan akan return resolve dan reject. maka dari itu kita bisa menggunakan keyword await
+dimana await ini akan meng-stop atau pause proses eksekusi code sehingga proses asyncrhonous itu selesai 
+
+9. menginstall dependencies mysql dan knex
+- $npm install knex mysql atau $npm install knex mysql --save
+
+10. membuat folder libs dan membuat file Javascript untuk konfigurasi connection database
+const knex = require('knex')({
+  client: 'mysql',
+  connection: {
+    host : '127.0.0.1',
+    port : 3306,
+    user : 'your_database_user',
+    password : 'your_database_password',
+    database : 'myapp_test'
+  }
+});
+
+export default knex;
+
+untuk production. mengisi credential itu jangan seperti code diatas. tulisnya di .env.local
+jadi credential diperlukan untuk menaruh informasi yang sensitif 
+
+11. membuat alias untuk menjalankan knex
+- sebelum membuat migrate kita harus membuat alias knex supaya dapat mepersingkat perintah knex ketika akan dijalankan
+- caranya kita cukup menambahkan "knex": "knex" di scripts package.json
+- contoh ketika akan menjalankan knex sebelum membuat alias nya $./node_modules/.bin/knex
+
+12. membuat knexfile.js
+- $knex init untuk menyimpan schema migration yang kita buat
+
+13. membuat file konfigurasi knex dan migration.
+- membuat migration $npm run knex migrate:make migration_name
+
+- kita hanya menggunakan yang development nya saja 
+module.exports = {
+
+  development: {
+    client: 'mysql',
+    connection: {
+      host: '127.0.0.1',
+      port: 3306,
+      user: 'root',
+      password: (password),
+      database: (nama database)
+    }
+  },
+
+};
+
+lalu jalankan perintah $knex migrate:make migration_name 
+
+14. membuat schema migration
+- membuat table
+return knex.schema.createTable('posts', function (table) {
+  table.increments();
+  table.string('title');
+  table.text('content');
+  table.timestamps(true,true);
+});
+
+- menghapus table
+return knex.schema.dropTable('posts');
+
+lalu melakukan proses migration nya $npm run knex migrate:latest
+
+15. Membuat direktori untuk API Post atau endpoint CRUD di dalam folder pages/api
+@pages/api/posts
+ - setelah itu membuat file Javascript $create.js untuk membuat CREATE data atau POST
+
+ import (nama database) from 'lokasi database nya';
+
+  export default async function handler(req,res){
+    if(req.method !== 'POST') return res.status(405).end();
+    
+    // mengambil req body dari user isinya title dan content
+    const {title, content} = req.body;
+    
+    // lalu kita insert atau masukan req tadi ke database
+    const create = await database('posts').insert({
+        title,
+        content
+    });
+
+    // return dari create diatas itu bukan data langsung yang masuk/insert ke database. dia cuma id nya doang
+    // maka dari itu kita harus select lagi secara manual
+
+    const createdData = await database('posts).where('id', create).first(); 
+    
+    res.status(200);
+    res.json({
+        message: 'post create successfuly',
+        data: createdData
+    });
+  }
+
+16. Membuat file $index.js di pages/api/posts untuk READ data atau GET
+@pages/api/posts
+
+ import (nama database) from 'lokasi database nya';
+
+ export default async function handler(req,res){
+    if(req.method !== 'GET') return res.status(405).end();
+    
+    // select database posts untuk READ data
+    const posts = await database('posts');
+
+    res.status(200);
+    res.json({
+        message: 'post data successfuly',
+        data: posts
+    });
+  }
+
+17. Membuat folder update dan membuat file [id].js di pages/api/posts untuk UPDATE data atau PUT
+  @pages/api/posts/update/
+
+  import (nama database) from 'lokasi database nya';
+
+   export default async function handler(req,res){
+    if(req.method !== 'PUT') return res.status(405).end();
+
+    // mengambil id dari req query yang nantinya akan di update berdasarkan id yang di request
+    const {id} = req,query;
+
+    // mengambil req body dari user isinya title dan content
+    const {title, content} = req.body;
+
+    // lalu setelah dapat req id , title dan content kita melakukan query update
+    const update = await database('posts')
+                                .where({id})
+                                .update({
+                                  title,
+                                  content
+                                });
+
+    // membuat dan memberi respon data yang sudah diupdate                       
+    const updatedData = await database('posts).where({id}).first();
+
+    res.status(200);
+    res.json({
+        message: 'post update successfuly',
+        data: updatedData
+    });
+  }
+
+18. Membuat folder delete dan membuat file [id].js di pages/api/posts/delete untuk DELETE data
+  @pages/api/posts/delete
+
+  import (nama database) from 'lokasi database nya';
+
+   export default async function handler(req,res){
+    if(req.method !== 'DELETE') return res.status(405).end();
+
+    // mengambil id dari req query yang nantinya akan di update berdasarkan id yang di request
+    const {id} = req.query;
+
+    // setelah mendapatkan id dari req query. kita melakukan query untuk delete berdasarkan request id tadi
+    const deleteRow = await database('posts)
+                                    .where({id})
+                                    .del();   
+
+    res.status(200);
+    res.json({
+        message: 'post delete successfuly'
+    });
+  }
+
+=============================================================================================================================================
+authentication & otorisasi JSON-WEBTOKEN
+https://github.com/auth0/node-jsonwebtoken#jwtsignpayload-secretorprivatekey-options-callback
+
+authentication : proses login seperti memasukan email dan password. jika benar maka dikasih token / kunci
+otorisasi      : proteksi atau membatasi resource (bisa API contohnya : POST, PUT, GET, DELETE).
+jadi resource itu kita batasi hanya orang-orang yang punya token saja yang bisa akses resource nya. dengan catatan token nya valid
+
+maka dari itu kita bisa gunakan json-webtoken. jadi ketika mau memproteksi resource jadi resource nya gak bisa diakses oleh sembarang orang
+kita perlu memproteksi nya dengan token. jadi nanti token nya dikirim bersamaan ketika dia mau melakukan API call / pemanggilan API.
+bisa lewat headers HTTP , query string , body
+
+json-webtoken ini flow nya ada 2. pertama dia men-generate jadi kita akan memverifikasi usernya dulu secara manual ngecek apakah email dan passwordnya
+sesuai dengan di database. kalau ada maka kita panggil library json-webtoken nya untuk generate token atau istilah nya proses sign in.
+nah nanti token nya itu dikirim ke client dimana client itu nanti menggunakan nya untuk mengakses resource
+
+GENERATE TOKEN
+jwt.sign(payload, secretOrPrivateKey, [options, callback])
+payload             : biasanya di isi dengan data user seperti id atau email
+secretOrPrivateKey  : random string. nah ini yang akan digunakan untuk melakukan proses sign in nya
+[options, callback] : kaya setting untuk menyesuaikan perilaku jwt sesuai dengan keinginan kita
+
+VERIFIKASI TOKEN
+jwt.verify(token, secretOrPublicKey, [options, callback])
+token               : hasil dari generate token
+secretOrPublicKey   : untuk melakukan decoding nya
+[options, callback] : hasil return nya setelah proses verify 
+
+19. membuat schema migration untuk table user
+$npm run knex migrate:make migration_name
+
+exports.up = function (knex) {
+    return knex.schema.createTable('users', function (table) {
+        table.increments();
+        table.string('email');
+        table.string('password');
+        table.timestamps(true, true);
+    });
+};
+exports.down = function (knex) {
+    return knex.schema.dropTable('users');
+};
+
+lalu jalankan kembali $npm run knex migrate:latest
+
+sebelum generate token. kita harus membuat validasi terlebih dahulu. user nya itu udah ada belum di database. kita cek berdasarkan email.
+jika ada kita ambil password nya. nah password nya itu kemudian di hash menggunakan bcrypt.js. jadi password nya jangan plain text
+
+20. Menginstall dependency bcrypt & JWT
+$npm install jsonwebtoken bcryptjs
+
+21. setelah itu membuat folder authentication di @pages/api dan membuat file register.js untuk register user
+import (nama database) from 'lokasi database nya';
+import bcrypt from 'bcryptjs';
+
+export default async function handler(req,res){
+
+  if(req.method !== 'POST') return res.status(405).end();
+
+  // membuat request body email dan password dari user
+  const {email, password} = req.body;
+
+  // untuk membuat random string dengan panjang 10. digunakan untuk hash password
+  const salt = bcrypt.genSaltSync(10);
+
+  // untuk membuat password hash dari user. ini akan menghasilkan random string dari password dan salt nya
+  const passwordHash = bcrypt.hashSync(password, salt);
+
+  // untuk melakukan insert register email dan password user ke database
+  const register = await database('users').insert({
+    email,
+    password: passwordHash
+  });
+
+  // untuk memberikan respon ketika user berhasil register
+  const registeredUser = await database('users).where({id: register}).first();
+
+  res.status(200);
+  res.json({
+    message: 'user register successfuly',
+    data: registeredUser
+  });
+}
+
+22. setelah itu membuat file login.js di @pages/api/authentication untuk login user
+import (nama database) from 'lokasi database nya';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+
+export default async function handler(req,res){
+  if(req.method !== 'POST') return res.status(405).end();
+
+  // membuat request body email dan password dari user
+  const {email, password} = req.body;
+
+  // cek user melalui email. jadi ketika user mengisi email apakah ada datanya di database
+  const checkUser = await database('users').where({email}).first();
+
+  // melakukan validasi ketika email yang dimasukan user tidak valid atau tidak ada di database
+  if(!checkUser) return res.status(401).end();
+  
+  // cek password. jadi untuk melakukan compare/membandingkan password yang dimasukan user dengan yang ada di database itu sama atau tidak
+  const checkPassword = await bcrypt.compare(password, checkUser.password);
+
+  // melakukan validasi ketika password yang dimasukan user tidak valid atau tidak ada di database
+  if(!checkPassword) return res.status(401).end();
+
+  // untuk melakukan proses sign in atau chain atau yang mau di encode dengan jsonwebtoken.
+  // ibukucantik itu adalah secret nya atau private key sedangkan expiresIn adalah waktu kedaluarsa token nya (menggunakan default algorithm: 'RS256')
+  const token = jwt.sign({
+    id: checkUser.id,
+    email: checkUser.email
+  },'ibukucantik',{
+    expiresIn: '7d'
+  });
+
+  res.status(200);
+  res.json({
+    message: 'user login successfuly',
+    token
+  });
+}
+
+23. melakukan pembatasan resource. jadi hanya yang punya token yang bisa melakukan resource dari API. dengan menggunakan headers authorization Bearer
+ini disebut middlewares
+
+- kita buat authorization di index.js yang ada di dalam @pages/api/posts
+  import database from '../../../libs/database';
+  import jwt from 'jsonwebtoken';
+
+  export default async function handler(req, res) {
+      if (req.method !== 'GET') return res.status(405).end();
+
+      // untuk mengambil req authorization dari user (type authorization dan token nya)
+      const {authorization} = req.headers;
+      if(!authorization) return res.status(401).end();
+
+      // untuk memecah menjadi 2 bagian elemen array. jadi ada type authorization dan token
+      const authSplit = authentication.split(' ');
+      const [authType,authToken] = [authSplit[0], authSplit[1]];
+
+      if(authType !== 'Bearer') return res.status(401).end();
+
+      // melakukan proses verify jwt yang dimana dia membutuhkan token dan secret nya. ini untuk melakukan pembatasan resource
+      // const verify = jwt.verify(authToken, 'ibukucantik');
+
+      //kita buat kedalam try catch supaya dapat menghandle error dari verify. karena default dari verify itu throw error.
+      //jadi bukan error 401/402/405 atau true/false
+      try{
+        const verify = jwt.verify(authToken, 'ibukucantik');
+
+        const posts = await database('posts');
+
+        res.status(200);
+        res.json({
+            message: 'post data',
+            data: posts
+        });
+      }catch(err){
+        res.status(401).end();
+      }
+  }
+
+24. melakukan abstraksi atau memisahkan middlewares dari api yang kita buat yaitu posts (read,create,update,delete).
+supaya kita tidak menulis ulang code nya di setiap api nya.
+
+- buat folder @middlewares diluar folder @pages. lalu buat file $authorization.js
+import jwt from 'jsonwebtoken';
+
+// kita buat menjadi promise supaya menjadi asyncrhonous
+export default function authorization(req,res){  
+  return New Promise((resolve,reject) => {  
+    const {authorization} = req.headers;
+    if(!authorization) return res.status(401).end();
+
+    const authSplit = authentication.split(' ');
+    const [authType,authToken] = [authSplit[0], authSplit[1]];
+
+    if(authType !== 'Bearer') return res.status(401).end();
+
+    return jwt.verify(authToken, 'ibukucantik', function(err,decoded){
+      if(err) return res.status(401).end();
+
+      return resolve(decoded); //decoded itu ketika berhasil verify authorization nya. isinya id dan email
+    });
+  });
+}
+
+lalu kita panggil file $authorization.js nya di dalam file $index.js
+
+import database from '../../../libs/database';
+import authorization from '../../../middlewares/authorization';
+
+export default async function handler(req, res) {
+    if (req.method !== 'GET') return res.status(405).end();
+
+    // ini adalah file authorization yang kita buat sebelumnya. dimana parameter nya mengambil dari req dan res user
+    const auth = await authorization(req, res);
+
+    const posts = await database('posts');
+
+    res.status(200);
+    res.json({
+        message: 'post data',
+        data: posts
+    });
+
+}
+
+25. menambahkan authorization yang sebelumnya kita buat ke file create.js yang ada di dalam folder @pages/api/posts
+import database from '../../../libs/database';
+import authorization from '../../../middlewares/authorization';
+
+export default async function handler(req, res) {
+
+    if (req.method !== 'POST') return res.status(405).end();
+
+    const auth = await authorization(req, res);
+
+    const { title, content } = req.body;
+
+    const create = await database('posts').insert({
+        title,
+        content
+    });
+
+    const createdData = await database('posts').where('id', create).first();
+
+    res.status(200);
+    res.json({
+        message: 'Post created successfully',
+        data: createdData
+    });
+}
+
+26. menambahkan authorization yang sebelumnya kita buat ke file [id].js yang ada di dalam folder @pages/api/posts/update
+import database from '../../../../libs/database';
+import authorization from '../../../../middlewares/authorization';
+
+export default async function handler(req, res) {
+    if (req.method !== 'PUT') return res.status(405).end();
+
+    const auth = await authorization(req, res);
+
+    const { id } = req.query;
+    const { title, content } = req.body;
+
+    const update = await database('posts')
+        .where({ id })
+        .update({
+            title,
+            content
+        });
+
+    const updatedData = await database('posts').where({ id }).first();
+
+    res.status(200);
+    res.json({
+        message: 'post update successfuly',
+        data: updatedData
+    });
+}
+
+27. menambahkan authorization yang sebelumnya kita buat ke file [id].js yang ada di dalam folder @pages/api/posts/delete
+import database from '../../../../libs/database';
+import authorization from '../../../../middlewares/authorization';
+
+export default async function handler(req, res) {
+    if (req.method !== 'DELETE') return res.status(405).end();
+
+    const auth = await authorization(req, res);
+
+    const { id } = req.query;
+    const deleteRow = await database('posts')
+        .where({ id }).del();
+
+    res.status(200);
+    res.json({
+        message: 'post delete successfuly'
+    });
+}
+
+=============================================================================================================================================
+
+28. membuat tampilan ui untuk halaman register. dengan membuat folder auth dan membuat file $register.js. di dalam folder @pages
+import useState from 'React'
+
+export default function Register(){
+
+  // membuat state isinya berupa input email dan password dari user
+  const [fields,setFields] = useState({
+    email: '',
+    password: ''
+  });
+
+  // membuat state status untuk menampilkan status respon dari register
+  const [status,setStatus] = useState('normal');
+
+  // membuat event ketika form di submit
+  async function registerHandler(e){
+    e.preventDefault();
+
+    setStatus('loading');
+
+    // melakukan fetch data api dari @api/auth/register. dengan method POST dan body nya dari state yang kita buat.
+    // dan headers nya 'Content-Type': 'application/json' supaya berubah menjadi JSON
+    const registerReq = await fetch('/api/auth/register',{
+      method: 'POST',
+      body: JSON.Stringify(fields),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if(!registerReq.ok) return setStatus('error ' + registerReq.status);
+
+    // melakukan perubahan dari registerReq ke json
+    const registerResp = await registerReq.json();
+
+    setStatus('success');
+  }
+
+  function fieldHandler(e){
+    // membuat variabel yang fungsinya untuk menangkap inputan email atau password dari user. berdasarkan atribute name
+    const name = e.target.getAttribute('name');
+
+    // lalu kita masukan ke state dan kita lakukan merge supaya ketika input email dan password tidak hilang
+    setFields({
+      ...fields,
+      [name]: e.target.value
+    });
+  }
+ 
+
+  return (
+    <div className="register">
+         <p>{status}</p>
+
+         <h1>Register account</h1>
+
+         <form onSubmit={registerHandler.bind(this)}>
+            <input type="text" name="email" placeholder="Email" onChange={fieldHandler.bind(this)} />
+            <input type="password" name="password" placeholder="Password" onChange={fieldHandler.bind(this)} />
+
+            <button type="submit">Register</button>
+            <p>Already have an account?</p>
+            <Link href="/auth/login"><a className="btn_register">Login</a></Link>
+         </form>
+
+      </div>
+  )
+}
+
+29. membuat tampilan ui untuk halaman login. dengan membuat folder auth dan membuat file $login.js. di dalam folder @pages
+import useState from 'React'
+
+export default function Login(){
+
+  const [fields,setFields] = useState({
+    email: '',
+    password: ''
+  });
+
+  const [status,setStatus] = useState('normal');
+
+  async function loginHandler(e){
+    e.preventDefault();
+
+    setStatus('loading');
+    
+    const loginReq = await fetch('/api/auth/login',{
+      method: 'POST',
+      body: JSON.Stringify(fields),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if(!loginReq.ok) return setStatus('error ' + loginReq.status);
+
+    const loginResp = await loginReq.json();
+
+    setStatus('success');
+  }
+
+  function fieldHandler(e){
+    const name = e.target.getAttribute('name');
+    setFields({
+      ...fields,
+      [name]: e.target.value
+    });
+  }
+ 
+
+  return (
+    <div className="login">
+         <p>{status}</p>
+
+         <h1>login account</h1>
+
+         <form onSubmit={loginHandler.bind(this)}>
+            <input type="text" name="email" placeholder="Email" onChange={fieldHandler.bind(this)} />
+            <input type="password" name="password" placeholder="Password" onChange={fieldHandler.bind(this)} />
+
+            <button type="submit">login</button>
+            <p>Already have an account?</p>
+            <Link href="/auth/login"><a className="btn_login">Login</a></Link>
+         </form>
+
+      </div>
+  )
+}
+
+30. Implementasi Access Token Storage menggunakan js-cookie.
+cookie digunakan untuk menyimpan informasi token ke localstorage ketika user sudah login
+
+- menginstall cookie $npm install js-cookie
+- menambahkan cookie pada file $login.js
+
+import {useState, useEffect} from 'React'
+import cookie from 'js-cookie';
+import Router from 'next/router';
+
+export default function Login(){
+
+  const [fields,setFields] = useState({
+    email: '',
+    password: ''
+  });
+
+  const [status,setStatus] = useState('normal');
+
+  // melakukan redirect ke halaman posts ketika berhasil login. dan ini tidak akan bisa masuk ke halaman login lagi
+  // selama token nya masih ada di localstorage
+  useEffect(() => {
+    const token = cookie.get('token');
+    if(token) return Router.push('/posts');
+  });
+
+  async function loginHandler(e){
+    e.preventDefault();
+
+    setStatus('loading');
+    
+    const loginReq = await fetch('/api/auth/login',{
+      method: 'POST',
+      body: JSON.Stringify(fields),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if(!loginReq.ok) return setStatus('error ' + loginReq.status);
+
+    const loginResp = await loginReq.json();
+
+    setStatus('success');
+
+    cookie.set('token', loginResp.token);
+
+    // untuk melakukan riderect ke halaman posts ketika berhasil login
+    Router.push('/posts');
+  }
+
+  function fieldHandler(e){
+    const name = e.target.getAttribute('name');
+    setFields({
+      ...fields,
+      [name]: e.target.value
+    });
+  }
+ 
+
+  return (
+    <div className="login">
+         <p>{status}</p>
+
+         <h1>login account</h1>
+
+         <form onSubmit={loginHandler.bind(this)}>
+            <input type="text" name="email" placeholder="Email" onChange={fieldHandler.bind(this)} />
+            <input type="password" name="password" placeholder="Password" onChange={fieldHandler.bind(this)} />
+
+            <button type="submit">login</button>
+            <p>Already have an account?</p>
+            <Link href="/auth/login"><a className="btn_login">Login</a></Link>
+         </form>
+
+      </div>
+  )
+}
+
+selain menggunakan useEffect untuk melakukan redirect. kita bisa gunakan cara getServerSideProps.
+getServerSideProps digunakan untuk data fetching di server. jadi ketika kita melakukan data fetching di server.
+otomatis data nya akan di populasi di server. dan dikirimkan ke jsx nya atau return component nya.
+ketika menggunakan getServerSideProps otomatis halaman kita jadi ssr server side rendering
+
+- sebelum itu kita install library next-cookie untuk parsing token nya. $npm install next-cookie
+
+import {useState, useEffect} from 'React'
+import cookie from 'js-cookie';
+import Router from 'next/router';
+import cookies from 'next-cookies';
+
+export async function getServerSideProps(context) {
+
+  // melakukan parsing token agar menjadi object dengan menggunakan library cookies next js
+  const allCookies = cookies(context);
+
+  // melakukan validasi jika token nya ada di dalam cookies. maka dia masuk ke halaman posts
+  // nah untuk redirect nya tidak menggunakan router karena itu untuk client side. kita gunakan writeHead
+  if(allCookies.token)
+    return context.res.writeHead(302,{
+      Location: '/posts'
+    }).end(); 
+
+  return {
+    props: {},
+  }
+}
+
+export default function Login(){
+
+  const [fields,setFields] = useState({
+    email: '',
+    password: ''
+  });
+
+  const [status,setStatus] = useState('normal');  
+
+  async function loginHandler(e){
+    e.preventDefault();
+
+    setStatus('loading');
+    
+    const loginReq = await fetch('/api/auth/login',{
+      method: 'POST',
+      body: JSON.Stringify(fields),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if(!loginReq.ok) return setStatus('error ' + loginReq.status);
+
+    const loginResp = await loginReq.json();
+
+    setStatus('success');
+
+    cookie.set('token', loginResp.token);
+
+    // untuk melakukan riderect ke halaman posts ketika berhasil login
+    Router.push('/posts');
+  }
+
+  function fieldHandler(e){
+    const name = e.target.getAttribute('name');
+    setFields({
+      ...fields,
+      [name]: e.target.value
+    });
+  }
+ 
+
+  return (
+    <div className="login">
+         <p>{status}</p>
+
+         <h1>login account</h1>
+
+         <form onSubmit={loginHandler.bind(this)}>
+            <input type="text" name="email" placeholder="Email" onChange={fieldHandler.bind(this)} />
+            <input type="password" name="password" placeholder="Password" onChange={fieldHandler.bind(this)} />
+
+            <button type="submit">login</button>
+            <p>Already have an account?</p>
+            <Link href="/auth/login"><a className="btn_login">Login</a></Link>
+         </form>
+
+      </div>
+  )
+}
+
+31. melakukan abstraksi code getServerSideProps pada login.js dengan membuat file authenticationPages.js di dalam folder @middlewares.
+lalu kita return promise supaya dia menjadi asyncrhonous
+
+import cookies from 'next-cookies';
+
+export function unAuthPage(context){
+  return new Promise((resolve) => {  
+    const allCookies = cookies(context);
+
+    if(allCookies.token)
+      return context.res.writeHead(302,{
+        Location: '/posts'
+      }).end(); 
+    
+    return resolve('unAuthorized');
+  });
+}
+
+32. lalu kita panggil file authenticationPages.js yang kita buat di file login.js getServerSideProps
+import {useState, useEffect} from 'React'
+import cookie from 'js-cookie';
+import Router from 'next/router';
+import cookies from 'next-cookies';
+import unAuthPage from 'middlewares/authenticationPages';
+
+export async function getServerSideProps(context) {
+  await unAuthPage(context);
+
+  return {
+    props: {},
+  }
+}
+
+export default function Login(){
+
+  const [fields,setFields] = useState({
+    email: '',
+    password: ''
+  });
+
+  const [status,setStatus] = useState('normal');  
+
+  async function loginHandler(e){
+    e.preventDefault();
+
+    setStatus('loading');
+    
+    const loginReq = await fetch('/api/auth/login',{
+      method: 'POST',
+      body: JSON.Stringify(fields),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if(!loginReq.ok) return setStatus('error ' + loginReq.status);
+
+    const loginResp = await loginReq.json();
+
+    setStatus('success');
+
+    cookie.set('token', loginResp.token);
+
+    // untuk melakukan riderect ke halaman posts ketika berhasil login
+    Router.push('/posts');
+  }
+
+  function fieldHandler(e){
+    const name = e.target.getAttribute('name');
+    setFields({
+      ...fields,
+      [name]: e.target.value
+    });
+  }
+ 
+
+  return (
+    <div className="login">
+         <p>{status}</p>
+
+         <h1>login account</h1>
+
+         <form onSubmit={loginHandler.bind(this)}>
+            <input type="text" name="email" placeholder="Email" onChange={fieldHandler.bind(this)} />
+            <input type="password" name="password" placeholder="Password" onChange={fieldHandler.bind(this)} />
+
+            <button type="submit">login</button>
+            <p>Already have an account?</p>
+            <Link href="/auth/login"><a className="btn_login">Login</a></Link>
+         </form>
+
+      </div>
+  )
+}
+
+33. lalu kita buat juga getServerSideProps di file register.js
+import Link from "next/link";
+import { useState } from "react";
+import { unauthPage } from '../../middlewares/authorizationPage';
+
+export async function getServerSideProps(ctx) {
+   await unauthPage(ctx);
+
+   return {
+      props: {}, // will be passed to the page component as props
+   }
+}
+
+export default function Register() {
+
+   const [fields, setFields] = useState({
+      email: '',
+      password: ''
+   });
+
+   const [status, setStatus] = useState('normal');
+
+   async function registerHandler(e) {
+      e.preventDefault();
+
+      setStatus('Loading...');
+      const registerReq = await fetch('/api/auth/register', {
+         method: 'POST',
+         body: JSON.stringify(fields),
+         headers: {
+            'Content-Type': 'application/json'
+         }
+      });
+
+      if (!registerReq.ok) return setStatus('Error' + registerReq.status);
+
+      const registerResponse = await registerReq.json();
+
+      setStatus('Success');
+   }
+
+   function fieldHandler(e) {
+      e.preventDefault();
+      const name = e.target.getAttribute('name');
+
+      setFields({
+         ...fields,
+         [name]: e.target.value
+      });
+   }
+
+   return (
+      <div className="register">
+         <p>{status}</p>
+
+         <h1>Register account</h1>
+
+         <form onSubmit={registerHandler.bind(this)}>
+            <input type="text" name="email" placeholder="Email" onChange={fieldHandler.bind(this)} />
+            <input type="password" name="password" placeholder="Password" onChange={fieldHandler.bind(this)} />
+
+            <button type="submit">Register</button>
+            <p>Already have an account?</p>
+            <Link href="/auth/login"><a className="btn_register">Login</a></Link>
+         </form>
+
+      </div>
+   );
+}
+
+34. lalu kita buat function untuk authPage nya di file authenticationPages.js yang ada di folder middlewares
+import cookies from 'next-cookies';
+
+export function unauthPage(ctx) {
+    return new Promise(resolve => {
+        const allCookies = cookies(ctx);
+
+        if (allCookies.token)
+            return ctx.res.writeHead(302, {
+                Location: '/posts'
+            }).end();
+
+        return resolve('unauthorized');
+    });
+}
+
+
+export function authPage(ctx) {
+    return new Promise(resolve => {
+        const allCookies = cookies(ctx);
+
+        if (!allCookies.token)
+            return ctx.res.writeHead(302, {
+                Location: '/auth/login'
+            }).end();
+
+        return resolve({
+            token: allCookies.token
+        });
+    });
+}
+
+35. lalu kita panggil authenticationPages.js yang kita buat sebelumnya ke dalam file @pages/posts/index.js
+import authPage from 'middlewares/authenticationPages';
+
+export default async function getServerSideProps(context){
+  // ini untuk mengambil token ketika sudah berhasil login
+  const {token} = await authPage(context);
+
+  const postReq = await fetch('http://localhost:3000/api/posts',{
+    headers: {
+      'authorization': 'application/json'
+    }
+  });
+
+  const posts = await postReq.json();
+
+  return {props: {
+    posts: posts.data
+  }};
+}
+
+export default function PostIndex(props){
+  return (
+    <div>
+      <h1>posts</h1>
+
+      {props.posts.map(post => (<div key={post.id}>{post.title}</div>) )}
+    </div>
+  )
+}
+
+36. membuat file create.js di dalam folder @pages/posts. untuk membuat posts baru. 
+import useState from 'react';
+import authPage from 'middlewares/authenticationPages';
+import Router from 'next/router';
+
+export async function getServerSideProps(content){
+  const {token} = await authPage(context);
+
+  return {
+    props: {
+      token
+    }
+  }
+}
+
+export default function PostCreate(props){
+  const [fields, setFields] = useState({
+    title: '',
+    content: ''
+  }); 
+
+  const [status, setStatus] = useState('normal');
+
+  async function createHandler(e){
+    e.preventDefault();
+
+    setStatus('loading');
+
+    const {token} = props;
+
+    const create = await fetch('/api/posts/create',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify(fields)
+    });
+
+    if(!create.ok) return setStatus('error');
+
+    const resp = await create.json();
+    setStatus('success');
+    Router.push('/posts');
+  }
+
+  function fieldsHandler(e){
+      const name = e.target.getAttribute('name');
+      setFields({
+        ...fields,
+        [name]: e.target.value
+      });
+  }
+
+  return (
+    <div className="create_post">
+            <h1>Create a Post</h1>
+            <hr />
+            <p className={checkStatus(status)}>Status: {status}</p>        
+            <form onSubmit={createHandler.bind(this)}>
+                <input onChange={fieldsHandler.bind(this)} type="text" name="title" placeholder="Title" />
+                <textarea onChange={fieldsHandler.bind(this)} name="content" placeholder="content"></textarea>
+                <button type="submit">Create Post</button>
+            </form>
+        </div>
+  )
+}
+
+37. membuat delete data posts di dalam file index.js yang ada di dalam folder @pages/posts
+import authPage from 'middlewares/authenticationPages';
+import useState from 'react';
+
+export default async function getServerSideProps(context){
+  // ini untuk mengambil token ketika sudah berhasil login
+  const {token} = await authPage(context);
+
+  const postReq = await fetch('http://localhost:3000/api/posts',{
+    headers: {
+      'authorization': 'application/json'
+    }
+  });
+
+  const posts = await postReq.json();
+
+  return {props: {
+    token,
+    posts: posts.data
+  }};
+}
+
+export default function PostIndex(props){
+
+  const [posts, setPosts] = useState({
+    props.posts
+  });
+
+  async function deleteHandler(id,e){
+    e.preventDefault();
+
+    const {token} = props;
+
+    const ask = confirm('apa data ingin dihapus?');
+
+    if(ask) {
+      const deletePost = await fetch('/api/posts/delete/' + id,{
+        method: 'DELETE',
+        headers: {
+          'authorization': 'Bearer ' + token
+        }
+      });
+
+      const res = await deletePost.json();
+      
+      const postFiltered = posts.filter(post => {
+        if(post.id !== id) return post; 
+      });
+
+      setPosts(postFiltered);
+    }
+  }
+  
+  return (
+    <div>
+      <h1>posts</h1>
+
+      {posts.map(post => (
+        <div key={post.id}>
+          <h3>{post.title}</h3>
+          <p>{post.content}</p>
+          <button>Update</button>
+          <button onChange={deleteHandler.bind(this,post.id)}>Delete</button>
+          <hr/>
+        </div>)
+        )}
+    </div>
+  )
+}
+
+38. membuat folder update di dalam folder @pages/posts. dan membuat file [id].js untuk update data posts
+sebelum itu kita buat api untuk detail dari id posts yang kita pilih dan mau di update.
+kita buat folder detail dan buat file [id].js di dalam folder @pages/api/posts
+
+import database from '../../../../libs/database';
+import authorization from '../../../../middlewares/authorization';
+
+export default async function handler(req, res) {
+    if (req.method !== 'GET') return res.status(405).end();
+
+    const { id } = req.query;
+
+    const auth = await authorization(req, res);
+    const post = await database('posts').where({ id }).first();
+
+    if (!post) return res.status(404).end();
+
+    res.status(200);
+    res.json({
+        message: 'post data',
+        data: post
+    });
+
+}
+
+kemudian di file index.js yang ada di dalam folder @pages/posts kita buat button link update nya untuk masuk ke halaman update
+
+import { useState } from "react";
+import { authPage } from "../../middlewares/authorizationPage";
+import Router from "next/router";
+import Nav from "../../components/Nav";
+
+export async function getServerSideProps(ctx) {
+    const { token } = await authPage(ctx);
+
+    const postsReq = await fetch('http://localhost:3000/api/posts', {
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    })
+
+    const posts = await postsReq.json();
+
+    return {
+        props: {
+            token,
+            posts: posts.data
+        } // will be passed to the page component as props
+    }
+}
+
+export default function PostIndex(props) {
+
+    const [posts, setPosts] = useState(props.posts);
+
+    // ? delete
+    async function deleteHandler(id, e) {
+        e.preventDefault();
+
+        const { token } = props;
+        const ask = confirm('Apakah anda yakin ingin menghapus data ?');
+
+        if (ask) {
+            const deletePost = await fetch('/api/posts/delete/' + id, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+
+            const res = await deletePost.json();
+            alert('Data berhasil di DELETE :)')
+
+            const postFiltered = posts.filter(post => {
+                return post.id !== id ? post : '';
+            });
+
+            setPosts(postFiltered);
+        }
+
+    }
+
+    // ? update
+    function updateHandler(id) {
+        Router.push('/posts/update/' + id);
+    }
+
+    return (
+        <div className="post">
+            <h1>Posts Data</h1>
+            <hr />
+            <Nav />
+            <ul>
+                {posts.map(post => {
+                    return (
+                        <>
+                            <li>
+                                <h5 key={post.id}>{post.title}</h5>
+                                <p>{post.content}</p>
+
+                                <div className="action">
+                                    <button onClick={updateHandler.bind(this, post.id)} className="btn_edit">Update</button>
+                                    <button onClick={deleteHandler.bind(this, post.id)} className="btn_delete">Delete</button>
+                                </div>
+                            </li>
+                            <hr className="line" />
+                        </>
+                    )
+                })}
+            </ul>
+        </div>
+    );
+}
+
+lalu kita lakukan logic untuk post update nya 
+
+import { useState } from "react";
+import { authPage } from "../../middlewares/authorizationPage";
+import Router from "next/router";
+import Nav from "../../components/Nav";
+
+export async function getServerSideProps(context) {
+    const { token } = await authPage(context);
+
+    const {id} = context.query;
+
+    const postReq = await fetch('htpp://localhost:3000/api/posts/detail/' + id,{
+      headers: {
+        'authorization': 'Bearer ' + token
+      }
+    });
+
+    const resp = await postReq.json();
+
+    return {
+        props: {
+            token,
+            post: resp.data
+        }
+    }
+}
+
+export default function PostUpdate(props) {
+    const {post} = props;
+
+    const [fields, setFields] = useState({
+        title: post.title,
+        content: post.content
+    });
+
+    const [status, setStatus] = useState('normal');
+
+    async function updateHandler(e) {
+        e.preventDefault();
+
+        setStatus('loading');
+
+        const { token } = props;
+
+        const update = await fetch('/api/posts/update/' + post.id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(fields)
+        });
+
+        if (!update.ok) return setStatus('Error');
+
+        const res = await update.json();
+
+        setStatus('success');
+
+        Router.push('/posts');
+    }
+
+    function fieldsHandler(e) {
+        e.preventDefault();
+        const name = e.target.getAttribute('name');
+
+        setFields({
+            ...fields,
+            [name]: e.target.value
+        });
+    }
+
+    function checkStatus(status) {
+        if (status === 'success') {
+            return 'success'
+        }
+        if (status === 'error') {
+            return 'error'
+        }
+        if (status === 'normal') {
+            return 'normal'
+        }
+    }
+
+    return (
+        <div className="create_post">
+            <h1>Update a Post</h1>
+            <hr />
+            <p className={checkStatus(status)}>Status: {status}</p>
+            <Nav />
+            <form onSubmit={updateHandler.bind(this)}>
+                <input onChange={fieldsHandler.bind(this)} type="text" name="title" placeholder="Title" defaultValue={post.title} />
+                <textarea onChange={fieldsHandler.bind(this)} name="content" placeholder="content" defaultValue={post.content} ></textarea>
+                <button type="submit">save Post</button>
+            </form>
+        </div>
+    )
+}
+
+39. membuat folder dengan nama components untuk navigasi di luar folder @pages
+dan kita buat file dengan nama $nav.js untuk membuat navigasi ke halaman. dan membuat button untuk Logout 
+import Link from 'next/link';
+import cookie from 'js-cookie';
+import Router from 'next/router';
+
+export default function Nav(){
+
+  function logoutHandler(e){
+    e.preventDefault();
+
+    cookie.remove('token');
+    Router.replace('/auth/login');
+  }
+
+  return (
+    <>
+      <Link href="/posts"><a>Posts</a></Link>
+      <Link href="/posts/create"><a>Create Post</a></Link>
+      <a href="#" onClick={logoutHandler.bind(this)}>Logout</a>
+    </>
+  )
+}
+
+kemudian kita simpan atau buat nav nya di file $index.js , $create.js $[id].js yang ada di dalam folder @pages/posts
+
+40. membuat file .env.local diluar folder @pages untuk membuat credential atau load datanya lewat env
+DB_CLIENT=mysql
+DB_NAME=learn_nextjs
+DB_USERNAME=root
+DB_PASSWORD=
+DB_HOST=127.0.0.1
+
+JWT_SECRET=ibukucantik
+
+lalu di file database.js yang ada di folder @libs kita ubah isinya sesuai dengan yang ada di .env.local
+
+const knex = require('knex')({
+  client: process.env.DB_CLIENT,
+  connection: {
+      host: process.env.DB_HOST,
+      port: 3306,
+      user: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME
+  }
+});
+
+export default knex;
+
+lalu kita buat juga di knexfile.js
+
+module.exports = {
+
+  development: {
+    client: process.env.DB_CLIENT,
+    connection: {
+      host: process.env.DB_HOST,
+      port: 3306,
+      user: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME
+    }
+  },
+
+};
+
+kemudian sebelum itu kita harus install dot.env $npm install dotenv. karena knexfile itu berjalan bukan di atas enviroment next js
+maka dari itu kita harus tambahkan dotenv -e .env.local agar supaya ketika knex dijalankan knexfile nya juga ikut berjalan.
+intinya knexfile nya supaya dapat terbaca oleh enviroment next js 
+
+"scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "knex": "dotenv -e .env.local knex"
+  },
+
+kemudian untuk 'ibukucantik' nya kita ubah dengan JWT_SECRET. 
+file nya ada di login.js yang ada di dalam folder @pages/api/auth
+dan juga di authorization.js yang ada di dalam folder @middlewares
+
+41. menambahkan button untuk register di @pages/auth/login untuk masuk ke halaman register.
+dan begitu juga di dalam file register.js kita tambahkan button untuk login
+
+import { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+import Router from 'next/router';
+import { unauthPage } from '../../middlewares/authorizationPage';
+import Link from 'next/link';
+
+export async function getServerSideProps(ctx) {
+   await unauthPage(ctx);
+
+   return {
+      props: {}, // will be passed to the page component as props
+   }
+}
+
+export default function Login() {
+
+   const [fields, setFields] = useState({
+      email: '',
+      password: ''
+   });
+
+   const [status, setStatus] = useState('Normal...');
+
+   // useEffect(() => {
+   //    const token = Cookies.get('token');
+
+   //    if (token) return Router.push('/posts');
+   // }, []);
+
+   async function loginHandler(e) {
+      e.preventDefault();
+
+      setStatus('Loading...');
+
+      const loginReq = await fetch('/api/auth/login', {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify(fields)
+      });
+
+      if (!loginReq.ok) return setStatus('error ' + loginReq.status);
+
+      const loginResp = await loginReq.json();
+
+      setStatus('Success...');
+
+      Cookies.set('token', loginResp.token);
+
+      Router.push('/posts');
+   };
+
+   function fieldHandler(e) {
+      e.preventDefault();
+
+      const name = e.target.getAttribute('name');
+      setFields({
+         ...fields,
+         [name]: e.target.value
+      });
+   };
+
+   return (
+      <div className='login'>
+         <p>{status}</p>
+         <h1>Login account</h1>
+
+         <form onSubmit={loginHandler.bind(this)}>
+            <input type="text" name="email" placeholder="Email" onChange={fieldHandler.bind(this)} />
+            <input type="password" name="password" placeholder="Password" onChange={fieldHandler.bind(this)} />
+
+            <button type="submit">Login</button>
+            <p>New User?</p>
+            <Link href="/auth/register"><a className="btn_register">Create an account</a></Link>
+         </form>
+      </div>
+   )
+}
